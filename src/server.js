@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-const https = require("https");
-const { app } = require("./app.js");
+const https = require("http");
+const app = require("./app.js");
 
 const PORT = process.env.PORT;
 

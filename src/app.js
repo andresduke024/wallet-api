@@ -8,4 +8,4 @@ app.use(morgan("combined"));
 app.use(cors());
 app.use(express.json());
 
-module.exports = app;
+module.exports = app; 
