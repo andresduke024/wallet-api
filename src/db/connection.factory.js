@@ -1,11 +1,13 @@
-const mysqlConnection = require("./mysql.connection");
+const { Sequelize } = require("sequelize");
 
-function get(type, connectionConfig) {
-    if (type == "mysql") {
-        return mysqlConnection(connectionConfig)
-    } else {
-        throw new Error("Database connection manager not implemented");
-    }
+function create(config) {
+    return new Sequelize(config.db, config.username, config.password, {
+        dialect: config.dialect,
+        host: config.host,
+        port: config.port
+    });
 }
 
-module.exports = { get }
+module.exports = { 
+    create
+}
