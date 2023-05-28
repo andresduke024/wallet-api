@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-const TOKEN_KEY = process.env.TOKEN_KEY;
+const { tokenSecretKey } = require("../config/global.config.js");
 
 function authenticate(token) {
     try {
-        const decodedData = jwt.verify(token, TOKEN_KEY);
+        const decodedData = jwt.verify(token, tokenSecretKey);
         return decodedData;
     } catch {
         throw new Error("Invalid token");
@@ -14,7 +14,7 @@ function authenticate(token) {
 function create(data) {
     const token = jwt.sign(
         data, 
-        TOKEN_KEY,
+        tokenSecretKey,
         {
             expiresIn: "24h"
         }

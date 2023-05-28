@@ -7,5 +7,6 @@ module.exports = {
         dialect: process.env.dbDialect,
         host: process.env.dbHost,
         port: process.env.dbHostPort
-    }
+    },
+    tokenSecretKey: process.env.tokenSecretKey
 }
