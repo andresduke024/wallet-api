@@ -18,6 +18,8 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22"
+    "mysql2": "^3.3.2",
+    "nodemon": "^2.0.22",
+    "sequelize": "^6.31.1"
   }
 }
