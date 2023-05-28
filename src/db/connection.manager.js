@@ -53,7 +53,7 @@ async function start() {
         const sequelize = connectionFactory.create(dbConnection);
         registerEntities(sequelize);
         registerAssociations();
-        await sequelize.sync({ alter: true });
+        await sequelize.sync();
     } catch (error) {
         console.error("Could not start db connection ", error)
     }
