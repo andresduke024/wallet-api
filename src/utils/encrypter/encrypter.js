@@ -10,8 +10,8 @@ function create(encryptManager) {
     }
 }
 
-module.exports = function(){
-    const encrypter = create(bcryptManager)
+module.exports = function(encryptManager){
+    const encrypter = create(encryptManager || bcryptManager)
 
     return {
         ...encrypter

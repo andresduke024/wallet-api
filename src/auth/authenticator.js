@@ -12,8 +12,8 @@ function init(authManager) {
     }
 }
 
-module.exports = function() {
-    const instance = init(jwtManager);
+module.exports = function(manager) {
+    const instance = init(manager || jwtManager);
 
     return {
         createToken: instance.createToken, 
