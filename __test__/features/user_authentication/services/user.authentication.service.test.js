@@ -61,7 +61,19 @@ describe("User authentication service Tests", () => {
         mockRepository.find.mockResolvedValue({});
         mockValidator.isValidObject.mockReturnValue(false);
 
-        await expect(sut.validateLogin(mockUser)).rejects.toThrow(ApiError);
+        const expectedError = new ApiError(401, UserAuthenticationErrors.USER_NOT_FOUND);
+
+        await expect(async () => await sut.validateLogin(mockUser)).toThrowApiError(expectedError);
+    });
+
+    test("It should thrown an exception due to invalid password", async () => {
+        mockRepository.find.mockResolvedValue(mockUser);
+        mockValidator.isValidObject.mockReturnValue(true);
+        mockEncrypter.compare.mockResolvedValue(false)
+
+        const expectedError = new ApiError(401, UserAuthenticationErrors.INVALID_CREDENTIALS);
+
+        await expect(async () => await sut.validateLogin(mockUser)).toThrowApiError(expectedError);
     });
 });
 
