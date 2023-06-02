@@ -24,16 +24,22 @@
   },
   "devDependencies": {
     "jest": "^29.5.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
   },
   "jest": {
     "collectCoverage": true,
-    "collectCoverageFrom": ["./src/**"], 
+    "collectCoverageFrom": [
+      "./src/**"
+    ],
     "coverageThreshold": {
-      "global" : {
+      "global": {
         "lines": 70
       }
     },
-    "setupFilesAfterEnv": ["./__test__/custom_matchers/custom.matchers.js"]
+    "setupFilesAfterEnv": [
+      "./__test__/setup.js",
+      "./__test__/custom_matchers/custom.matchers.js"
+    ]
   }
 }

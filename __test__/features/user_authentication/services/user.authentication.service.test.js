@@ -57,7 +57,7 @@ describe("User authentication service Tests", () => {
         expect(result).toStrictEqual(expected);
     });
 
-    test("It should thrown an exception due to invalid repository data", async () => {
+    test("It should thrown an error due to invalid repository data", async () => {
         mockRepository.find.mockResolvedValue({});
         mockValidator.isValidObject.mockReturnValue(false);
 
@@ -66,7 +66,7 @@ describe("User authentication service Tests", () => {
         await expect(async () => await sut.validateLogin(mockUser)).toThrowApiError(expectedError);
     });
 
-    test("It should thrown an exception due to invalid password", async () => {
+    test("It should thrown an error due to invalid password", async () => {
         mockRepository.find.mockResolvedValue(mockUser);
         mockValidator.isValidObject.mockReturnValue(true);
         mockEncrypter.compare.mockResolvedValue(false)
