@@ -5,7 +5,8 @@
   "main": "./src/server.js",
   "scripts": {
     "dev": "nodemon ./src/server.js",
-    "start": "node ./src/server.js"
+    "start": "node ./src/server.js",
+    "tests": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,26 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.3.2",
-    "nodemon": "^2.0.22",
     "sequelize": "^6.31.1"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 70
+      }
+    },
+    "setupFilesAfterEnv": [
+      "./__test__/setup.js",
+      "./__test__/custom_matchers/custom.matchers.js"
+    ]
   }
 }

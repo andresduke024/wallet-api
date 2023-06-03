@@ -6,7 +6,8 @@ module.exports = {
         password: process.env.dbPassword,
         dialect: process.env.dbDialect,
         host: process.env.dbHost,
-        port: process.env.dbHostPort
+        port: process.env.dbHostPort,
+        logging: process.env.isDBLoggingActive
     },
     tokenSecretKey: process.env.tokenSecretKey
 }

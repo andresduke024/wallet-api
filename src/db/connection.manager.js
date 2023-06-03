@@ -48,12 +48,22 @@ const userAssociations = require("../entities/user/user.associations.js");
 
 const transferAssociations = require("../entities/transfer/transfer.associations.js");
 
+let sequelize;
+
+async function disconnect() {
+    try {
+        sequelize.close();
+    } catch(error) {
+        console.error("Could not disconnect to db ", error)
+    }
+}
+
 async function start() {
     try {
-        const sequelize = connectionFactory.create(dbConnection);
+        sequelize = connectionFactory.create(dbConnection);
         registerEntities(sequelize);
         registerAssociations();
-        await sequelize.sync({ alter: true });
+        await sequelize.sync();
     } catch (error) {
         console.error("Could not start db connection ", error)
     }
@@ -99,4 +109,7 @@ function registerAssociations() {
     associations.forEach(item => item.setAssociations());
 }
 
-module.exports = { start }
+module.exports = { 
+    start,
+    disconnect
+ }
