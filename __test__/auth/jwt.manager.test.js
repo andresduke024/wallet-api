@@ -35,6 +35,7 @@ describe("JWT Manager tests", () => {
     })
 
     test("It should authenticate a valid token", () => {
+        // For this test to work you need to set the environment var 'token Secret Key' as 'test'
         const result = sut.authenticate(mockJWT);
         expect(result).toBeTruthy()
     })
