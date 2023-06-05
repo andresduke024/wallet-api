@@ -5,6 +5,9 @@ const app = require("../../../src/app.js")
 
 describe("User authentication router tests /auth", () => {
 
+    const mockUsername = "test@tests.com";
+    const mockPassword = "12345";
+
     beforeAll(async () => {
         await dbConnectionManager.start();
     })
@@ -16,10 +19,10 @@ describe("User authentication router tests /auth", () => {
     describe("Test POST /login", () => {
         test("It should response with 200 status code", async () => {
             const response = await request(app)
-                .post("/auth/login")
+                .post("/api/auth/login")
                 .send({
-                    username: "test",
-                    password: "12345"
+                    username: mockUsername,
+                    password: mockPassword
                 });
 
             expect(response.statusCode).toBe(200);
@@ -28,8 +31,8 @@ describe("User authentication router tests /auth", () => {
 
         test("It should response with 400 status code due to missing username", async () => {
             const response = await request(app)
-                .post("/auth/login")
-                .send({ password: "12345" });
+                .post("/api/auth/login")
+                .send({ password: mockPassword });
 
             expect(response.statusCode).toBe(400);
             expect(response.body.errors).toContain("Invalid username");
@@ -37,13 +40,37 @@ describe("User authentication router tests /auth", () => {
 
         test("It should response with 400 status code due to missing password", async () => {
             const response = await request(app)
-                .post("/auth/login")
-                .send({ username: "test" });
+                .post("/api/auth/login")
+                .send({ username: mockUsername });
 
             expect(response.statusCode).toBe(400);
             expect(response.body.errors).toContain("Invalid password");
         });
+
+        test("It should response with 401 status code due to user not found", async () => {
+            const response = await request(app)
+                .post("/api/auth/login")
+                .send({
+                    username: "test2@tests.com",
+                    password: mockPassword
+                });
+
+            expect(response.statusCode).toBe(401);
+            expect(response.body.error).toBe("USER_NOT_FOUND");
+        });
+
+        test("It should response with 401 status code due to invalid password", async () => {
+            const response = await request(app)
+                .post("/api/auth/login")
+                .send({
+                    username: mockUsername,
+                    password: "abcde"
+                });
+
+            expect(response.statusCode).toBe(401);
+            expect(response.body.error).toBe("INVALID_CREDENTIALS");
+        });
     })
 
 
-})
+});

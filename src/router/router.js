@@ -4,7 +4,7 @@ module.exports = {
     routes: [
         {
             router: userAuthenticationRouter.router,
-            path: "/auth"
+            path: "auth"
         }
     ]
 }
