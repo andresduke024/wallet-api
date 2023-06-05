@@ -1,4 +1,4 @@
-const { UserAuthenticationMapper } = require("../../../../src/features/user_authentication/mappers/user.authentication.mapper.js");
+const { UserAuthenticationMapperV1 } = require("../../../../src/features/user_authentication/mappers/user.authentication.mapper.v1.js");
 
 describe("User authentication mapper tests", () => {
     let mockUser = {
@@ -9,7 +9,7 @@ describe("User authentication mapper tests", () => {
     let sut;
 
     beforeEach(() => {
-        sut = new UserAuthenticationMapper();
+        sut = new UserAuthenticationMapperV1();
     })
 
     test("It should return a valid user object", async () => {

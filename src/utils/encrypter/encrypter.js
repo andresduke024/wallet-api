@@ -1,19 +1,22 @@
-const bcryptManager = require("./bcrypt.manager.js");
-
-function create(encryptManager) {
-    const encrypt = (data) => encryptManager.encrypt(data);
-    const compare = (data, encryptedData) => encryptManager.compare(data, encryptedData);
-
-    return {
-        encrypt,
-        compare
+class Encrypter {
+    /**
+     * To encrypt a string 
+     * @param {string} data 
+     * @returns {Promise<string>}
+     */
+    async encrypt(data) {
+        return Promise.reject(new Error("Encrypter (encrypt) not implemented"))
     }
+    
+    /**
+     * To compare if a regular string is equivalent to a encrypted string
+     * @param {string} data 
+     * @param {string} encryptedData 
+     * @returns {Promise<boolean>}
+     */
+    async compare(data, encryptedData) {
+        return Promise.reject(new Error("Encrypter (compare) not implemented"));
+    }   
 }
 
-module.exports = function(encryptManager){
-    const encrypter = create(encryptManager || bcryptManager)
-
-    return {
-        ...encrypter
-    }
-}
+module.exports = { Encrypter }

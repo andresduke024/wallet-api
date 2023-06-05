@@ -4,7 +4,7 @@ jest.mock("../../../../src/features/user_authentication/mappers/user.authenticat
 const { MockResponse } = require("../../../mocks/mock.response.js");
 const { UserAuthenticationService } = require("../../../../src/features/user_authentication/services/user.authentication.service.js");
 const { UserAuthenticationMapper } = require("../../../../src/features/user_authentication/mappers/user.authentication.mapper.js");
-const { UserAuthenticationController } = require("../../../../src/features/user_authentication/controller/user.authentication.controller.js");
+const { UserAuthenticationControllerV1 } = require("../../../../src/features/user_authentication/controller/user.authentication.controller.v1.js");
 
 const { ApiError } = require("../../../../src/utils/errors/api.error.js");
 
@@ -31,7 +31,7 @@ describe("User authentication controller tests", () => {
         service = new UserAuthenticationService();
         mapper = new UserAuthenticationMapper();
 
-        sut = new UserAuthenticationController(service, mapper);
+        sut = new UserAuthenticationControllerV1(service, mapper);
     });
 
     test("It should response a 200 status code and the user data", async () => {

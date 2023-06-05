@@ -1,13 +1,15 @@
 jest.mock( "../../../../src/features/user_authentication/repository/user.authentication.repository");
-jest.mock("../../../../src/utils/validations/validator.js")
+jest.mock("../../../../src/utils/validations/validator.js");
+jest.mock("../../../../src/utils/encrypter/encrypter.js");
+jest.mock("../../../../src/auth/auth.manager.js");
 
 const { UserAuthenticationRepository } = require("../../../../src/features/user_authentication/repository/user.authentication.repository");
-const { Validator } = require("../../../../src/utils/validations/validator.js")
+const { Validator } = require("../../../../src/utils/validations/validator.js");
+const { Encrypter } = require("../../../../src/utils/encrypter/encrypter.js");
 
-const mockAuthenticator = require("../../../auth/mock.authenticator.js");
-const mockEncrypter = require("../../../utils/encrypter/mock.encrypter.js");
+const { AuthManager } = require("../../../../src/auth/auth.manager.js");
 
-const { UserAuthenticationService } = require("../../../../src/features/user_authentication/services/user.authentication.service.js");
+const { UserAuthenticationServiceV1 } = require("../../../../src/features/user_authentication/services/user.authentication.service.v1.js");
 
 const { ApiError } = require("../../../../src/utils/errors/api.error.js");
 const { UserAuthenticationErrors } = require("../../../../src/features/user_authentication/errors/user.authentication.errors.js");
@@ -16,6 +18,8 @@ describe("User authentication service Tests", () => {
 
     let mockRepository;
     let mockValidator;
+    let mockEncrypter;
+    let mockAuthManager;
 
     let sut;
 
@@ -34,10 +38,14 @@ describe("User authentication service Tests", () => {
     beforeEach(() => {
         UserAuthenticationRepository.mockClear();
         Validator.mockClear();
+        Encrypter.mockClear();
+        AuthManager.mockClear();
         mockRepository = new UserAuthenticationRepository();
         mockValidator = new Validator();
+        mockEncrypter = new Encrypter();
+        mockAuthManager = new AuthManager();
 
-        sut = new UserAuthenticationService(mockRepository, mockEncrypter, mockAuthenticator, mockValidator);
+        sut = new UserAuthenticationServiceV1(mockRepository, mockEncrypter, mockAuthManager, mockValidator);
     });
 
     test("It should return token and user data", async () => {
@@ -45,7 +53,7 @@ describe("User authentication service Tests", () => {
         mockRepository.find.mockResolvedValue(mockUserResult);
         mockValidator.isValidObject.mockReturnValue(true);
         mockEncrypter.compare.mockResolvedValue(true);
-        mockAuthenticator.createToken.mockReturnValue(generatedToken);
+        mockAuthManager.createToken.mockReturnValue(generatedToken);
 
         const result = await sut.validateLogin(mockUser);
 

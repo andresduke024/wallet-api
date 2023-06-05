@@ -8,6 +8,8 @@ describe("User authentication router tests /auth", () => {
     const mockUsername = "test@tests.com";
     const mockPassword = "12345";
 
+    const loginEndpoint = "/api/v1/auth/login";
+
     beforeAll(async () => {
         await dbConnectionManager.start();
     })
@@ -19,7 +21,7 @@ describe("User authentication router tests /auth", () => {
     describe("Test POST /login", () => {
         test("It should response with 200 status code", async () => {
             const response = await request(app)
-                .post("/api/auth/login")
+                .post(loginEndpoint)
                 .send({
                     username: mockUsername,
                     password: mockPassword
@@ -31,7 +33,7 @@ describe("User authentication router tests /auth", () => {
 
         test("It should response with 400 status code due to missing username", async () => {
             const response = await request(app)
-                .post("/api/auth/login")
+                .post(loginEndpoint)
                 .send({ password: mockPassword });
 
             expect(response.statusCode).toBe(400);
@@ -40,7 +42,7 @@ describe("User authentication router tests /auth", () => {
 
         test("It should response with 400 status code due to missing password", async () => {
             const response = await request(app)
-                .post("/api/auth/login")
+                .post(loginEndpoint)
                 .send({ username: mockUsername });
 
             expect(response.statusCode).toBe(400);
@@ -49,7 +51,7 @@ describe("User authentication router tests /auth", () => {
 
         test("It should response with 401 status code due to user not found", async () => {
             const response = await request(app)
-                .post("/api/auth/login")
+                .post(loginEndpoint)
                 .send({
                     username: "test2@tests.com",
                     password: mockPassword
@@ -61,7 +63,7 @@ describe("User authentication router tests /auth", () => {
 
         test("It should response with 401 status code due to invalid password", async () => {
             const response = await request(app)
-                .post("/api/auth/login")
+                .post(loginEndpoint)
                 .send({
                     username: mockUsername,
                     password: "abcde"
