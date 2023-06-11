@@ -1,4 +1,4 @@
-const jwtManager = require("../../src/auth/jwt.manager.js");
+const { JWTAuthManager } = require("../../src/auth/jwt.auth.manager.js");
 
 describe("JWT Manager tests", () => {
 
@@ -13,8 +13,7 @@ describe("JWT Manager tests", () => {
 
     beforeEach(() => {
         mockRequest = { headers: {} }
-        sut = jwtManager;
-        
+        sut = new JWTAuthManager();
     })
 
     test("It should be able to get token from request headers", () => {
@@ -30,7 +29,7 @@ describe("JWT Manager tests", () => {
     });
 
     test("It should create a token successfully", () => {
-        const token = sut.create(mockUser);
+        const token = sut.createToken(mockUser);
         expect(token).toBeTruthy()
     })
 

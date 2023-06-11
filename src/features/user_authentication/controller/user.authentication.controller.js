@@ -1,22 +1,14 @@
-const { Controller } = require("../../../common/controller.js");
-
+const { response, request } = require("express");
+const { Controller } = require("../../../common/controller");
 class UserAuthenticationController extends Controller {
-    constructor(service, mapper) {
-        super();
-        this.service = service;
-        this.mapper = mapper;
-    }
-
+    /**
+     * Async function that tries to login with username and password
+     * @param { request } req 
+     * @param { response } res 
+     * @returns { Promise<response> }
+     */
     async login(req, res) {
-        try {
-            const user = await this.mapper.mapLoginRequestData(req);
-            const result = await this.service.validateLogin(user);
-
-            res.status(200).json({...result});
-        } catch (error) {
-            this.catchError(res, error);
-        }
-        
+       return Promise.reject(new Error("UserAuthenticationController not implemented"));
     }
 }
 

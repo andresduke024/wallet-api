@@ -1,10 +1,10 @@
-const userAuthenticationRouter = require("../features/user_authentication/user.authentication.router.js");
+const userAuthenticationRouterV1 = require("../features/user_authentication/user.authentication.router.v1.js");
 
 module.exports = {
     routes: [
         {
-            router: userAuthenticationRouter.router,
-            path: "/auth"
+            router: userAuthenticationRouterV1.router,
+            path: "v1/auth"
         }
     ]
 }

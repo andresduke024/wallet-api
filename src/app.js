@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 routes.forEach(element => {
-    app.use(element.path, element.router);
+    app.use(`/api/${element.path}`, element.router);
 });
 
 module.exports = app; 
