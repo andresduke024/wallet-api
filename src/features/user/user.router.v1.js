@@ -1,18 +1,19 @@
-const router = require("express").Router();
+const { Router } = require("express");
 
 const { Versions } = require("../../config/versions.js");
-const { UserAuthenticationControllerFactory } = require("./controller/user.authentication.controller.factory.js");
-const validationMiddleware = require("./request_validations/user.authentication.request.validations.js");
+const { UserControllerFactory } = require("./controller/user.controller.factory.js");
+const validationMiddleware = require("./request_validations/user.request.validations.js");
 
-const controller = UserAuthenticationControllerFactory.get(Versions.v1);
+const router = Router();
+const controller = UserControllerFactory.get(Versions.v1);
 
 /**
  * @swagger
- * /api/v1/auth/login:
+ * /api/v1/user:
  *   post:
  *     summary: Regular user and password based login
  *     tags:
- *      - Auth
+ *      - User
  *     requestBody:
  *      required: true
  *      content: 
@@ -20,12 +21,25 @@ const controller = UserAuthenticationControllerFactory.get(Versions.v1);
  *              schema:
  *                  type: object
  *                  properties:
- *                      username:
+ *                      identificationNumber:
+ *                          type: number
+ *                          example: 111111
+ *                      name: 
  *                          type: string
- *                          example: test@tests.com
- *                      password: 
+ *                          example: Joe Doe
+ *                      email:
+ *                          type: string
+ *                          example: test@test.com
+ *                      cellphone:
+ *                          type: string
+ *                          example: 3194567890
+ *                      password:
  *                          type: string
  *                          example: 12345
+ *                      passwordConfirmation:
+ *                          type: string
+ *                          example: 12345
+ * 
  *     responses:
  *       200:
  *         description: Retrieve the user's data and an auth token.
@@ -47,9 +61,11 @@ const controller = UserAuthenticationControllerFactory.get(Versions.v1);
  *                                  type: string
  *                              cellphone:
  *                                  type: string
+ *                              createdAt:
+ *                                  type: string
  *                      token: 
  *                          type: string
- *       401: 
+ *       400: 
  *          content: 
  *              application/json:
  *                  schema: 
@@ -57,21 +73,9 @@ const controller = UserAuthenticationControllerFactory.get(Versions.v1);
  *                      properties: 
  *                          error: 
  *                              type: string
- *                              example: INVALID_CREDENTIALS
- *       400:
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          errors: 
- *                              type: array
- *                              description: List of request body errors
- *                              example: [ Invalid username ]
- *                              
- *         
+ *                              example: INVALID_EMAIL
  */
 router
-    .post("/login", validationMiddleware.loginRequestValidations, (req, res) => controller.login(req, res))
+    .post("/", validationMiddleware.createUserRequestValidations, (req, res) => controller.create(req, res));
 
 module.exports = { router }

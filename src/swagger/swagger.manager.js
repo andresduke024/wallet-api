@@ -15,7 +15,8 @@ const options = {
         }
     },
     apis: [
-        "./src/features/user_authentication/user.authentication.router.js"
+        "./src/features/user_authentication/user.authentication.router.v1.js",
+        "./src/features/user/user.router.v1.js"
     ]
 }
 

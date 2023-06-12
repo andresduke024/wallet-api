@@ -53,7 +53,7 @@ describe("User authentication router tests /auth", () => {
             const response = await request(app)
                 .post(loginEndpoint)
                 .send({
-                    username: "test2@tests.com",
+                    username: "notExists@tests.com",
                     password: mockPassword
                 });
 
