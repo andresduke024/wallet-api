@@ -53,7 +53,7 @@ class UserServiceV1 extends UserService {
 
         const token = this.authManager.createToken({email: user.email, id: user.identificationNumber});
 
-        const { password, updatedAt, ...data } = result;
+        const { ...data } = result;
 
         return { user: data, token };
     }

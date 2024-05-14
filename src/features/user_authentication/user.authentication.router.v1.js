@@ -4,8 +4,6 @@ const { Versions } = require("../../config/versions.js");
 const { UserAuthenticationControllerFactory } = require("./controller/user.authentication.controller.factory.js");
 const validationMiddleware = require("./request_validations/user.authentication.request.validations.js");
 
-const controller = UserAuthenticationControllerFactory.get(Versions.v1);
-
 /**
  * @swagger
  * /api/v1/auth/login:
@@ -72,6 +70,6 @@ const controller = UserAuthenticationControllerFactory.get(Versions.v1);
  *         
  */
 router
-    .post("/login", validationMiddleware.loginRequestValidations, (req, res) => controller.login(req, res))
+    .post("/login", validationMiddleware.loginRequestValidations, (req, res) =>  UserAuthenticationControllerFactory.get(Versions.v1).login(req, res))
 
 module.exports = { router }

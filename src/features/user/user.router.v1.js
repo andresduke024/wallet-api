@@ -5,7 +5,6 @@ const { UserControllerFactory } = require("./controller/user.controller.factory.
 const validationMiddleware = require("./request_validations/user.request.validations.js");
 
 const router = Router();
-const controller = UserControllerFactory.get(Versions.v1);
 
 /**
  * @swagger
@@ -76,6 +75,6 @@ const controller = UserControllerFactory.get(Versions.v1);
  *                              example: INVALID_EMAIL
  */
 router
-    .post("/", validationMiddleware.createUserRequestValidations, (req, res) => controller.create(req, res));
+    .post("/", validationMiddleware.createUserRequestValidations, (req, res) => UserControllerFactory.get(Versions.v1).create(req, res));
 
 module.exports = { router }

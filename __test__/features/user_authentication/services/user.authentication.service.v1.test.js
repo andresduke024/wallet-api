@@ -3,11 +3,11 @@ jest.mock("../../../../src/utils/validations/validator.js");
 jest.mock("../../../../src/utils/encrypter/encrypter.js");
 jest.mock("../../../../src/auth/auth.manager.js");
 
-const { UserAuthenticationRepository } = require("../../../../src/features/user_authentication/repository/user.authentication.repository");
+const { UserAuthenticationRepository } = require("../../../../src/features/user_authentication/repository/user.authentication.repository.js");
 const { Validator } = require("../../../../src/utils/validations/validator.js");
 const { Encrypter } = require("../../../../src/utils/encrypter/encrypter.js");
 
-const { AuthManager } = require("../../../../src/auth/auth.manager.js");
+const { AuthManager } = require("../../../../src/auth/auth.manager.js.js");
 
 const { UserAuthenticationServiceV1 } = require("../../../../src/features/user_authentication/services/user.authentication.service.v1.js");
 

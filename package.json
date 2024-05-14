@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "jest": "^29.5.0",
+    "jest-cli": "^29.7.0",
     "jsdoc": "^4.0.2",
     "nodemon": "^2.0.22",
     "supertest": "^6.3.3"
@@ -43,6 +44,7 @@
     "setupFilesAfterEnv": [
       "./__test__/setup.js",
       "./__test__/custom_matchers/custom.matchers.js"
-    ]
+    ],
+    "coverageReporters": ["json", "html"]
   }
 }

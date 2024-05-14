@@ -1,7 +1,11 @@
 const request = require("supertest");
 
-const dbConnectionManager = require("../../../src/db/connection.manager.js");
 const app = require("../../../src/app.js")
+
+jest.mock('../../../src/features/user_authentication/controller/user.authentication.controller.js')
+
+const { UserAuthenticationControllerFactory } = require('../../../src/features/user_authentication/controller/user.authentication.controller.factory.js')
+const { UserAuthenticationController } = require('../../../src/features/user_authentication/controller/user.authentication.controller.js')
 
 describe("User authentication router tests /auth", () => {
 
@@ -10,16 +14,33 @@ describe("User authentication router tests /auth", () => {
 
     const loginEndpoint = "/api/v1/auth/login";
 
-    beforeAll(async () => {
-        await dbConnectionManager.start();
+    let controllerMock
+    let mockFactory = jest.fn()
+
+    beforeEach(async () => {
+        controllerMock = new UserAuthenticationController()
+        mockFactory.mockReturnValue(controllerMock)
+
+        UserAuthenticationControllerFactory.get = mockFactory
+
+        controllerMock.login.mockImplementation((_, res) => {
+            return res.status(500).json({error: "Generic mock implementation"})
+        })
     })
 
-    afterAll(async () => {
-        await dbConnectionManager.disconnect();
+    afterEach(async () => {
+        UserAuthenticationController.mockClear()
     });
 
     describe("Test POST /login", () => {
         test("It should response with 200 status code", async () => {
+            controllerMock.login.mockImplementation((_, res) => {
+                return res.status(200).json({
+                    user: {},
+                    token: ""
+                })
+            })
+
             const response = await request(app)
                 .post(loginEndpoint)
                 .send({
@@ -28,7 +49,7 @@ describe("User authentication router tests /auth", () => {
                 });
 
             expect(response.statusCode).toBe(200);
-            expect(response.body).toHaveProperties(["user", "token"]);
+            expect(response.body).toStrictHaveProperties(["user", "token"]);
         });
 
         test("It should response with 400 status code due to missing username", async () => {
@@ -50,6 +71,12 @@ describe("User authentication router tests /auth", () => {
         });
 
         test("It should response with 401 status code due to user not found", async () => {
+            const expectedErrorDescription = "USER_NOT_FOUND"
+
+            controllerMock.login.mockImplementation((_, res) => {
+                return res.status(401).json({error: expectedErrorDescription})
+            })
+
             const response = await request(app)
                 .post(loginEndpoint)
                 .send({
@@ -58,10 +85,16 @@ describe("User authentication router tests /auth", () => {
                 });
 
             expect(response.statusCode).toBe(401);
-            expect(response.body.error).toBe("USER_NOT_FOUND");
+            expect(response.body.error).toBe(expectedErrorDescription);
         });
 
         test("It should response with 401 status code due to invalid password", async () => {
+            const expectedErrorDescription = "INVALID_CREDENTIALS"
+
+            controllerMock.login.mockImplementation((_, res) => {
+                return res.status(401).json({error: expectedErrorDescription})
+            })
+
             const response = await request(app)
                 .post(loginEndpoint)
                 .send({
@@ -70,7 +103,7 @@ describe("User authentication router tests /auth", () => {
                 });
 
             expect(response.statusCode).toBe(401);
-            expect(response.body.error).toBe("INVALID_CREDENTIALS");
+            expect(response.body.error).toBe(expectedErrorDescription);
         });
     })
 

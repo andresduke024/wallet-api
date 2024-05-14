@@ -35,7 +35,7 @@ expect.extend({
 });
 
 expect.extend({
-    async toHaveProperties(received, expectedProperties) {
+    toStrictHaveProperties(received, expectedProperties) {
 
         if (typeof received !== "object") {
             return mismatchResult("Received value it's not an object");
@@ -48,10 +48,23 @@ expect.extend({
             }
         }
 
-        const result = expectedProperties.every(element => received.hasOwnProperty(element));
+        const resultPropertiesLength = Object.keys(received).length
+        if (resultPropertiesLength != expectedProperties.length){
+            return mismatchResult(`Expected properties length (${expectedProperties.length}) is different from result properties length (${resultPropertiesLength})`);
+        }
+
+        let missingProperties = [];
+        const result = expectedProperties.every(element => {
+            const result = received.hasOwnProperty(element);
+            
+            if(!result) { missingProperties.push(element) }
+
+            return result;
+        });
 
         if (!result) {
-            return mismatchResult(`Expected property '${element}' is missing in received value`);
+            const properties = missingProperties.map(element => `${element}, `);
+            return mismatchResult(`Expected property '${properties}' is missing in received value`);
         }
 
         return {
